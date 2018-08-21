@@ -26,7 +26,7 @@ namespace Web.HtmlToImagePdf.Controllers
 
             //第二种，传Url
             var image = new UrlAsImage(url);
-            image.SaveOnServerPath = Path.Combine("files/image", DateTime.Now.ToString("yyyyMMdd")+".png");
+            image.SaveOnServerPath = Path.Combine("wwwroot/files/image", DateTime.Now.ToString("yyyyMMddhhmmss")+".png");
             // image.PageWidth = 800;
             // image.PageHeight = 600;
             return image;
@@ -41,6 +41,7 @@ namespace Web.HtmlToImagePdf.Controllers
         public IActionResult Pdf(string url = "http://news.baidu.com")
         {
             var pdf = new UrlAsPdf(url);
+            pdf.SaveOnServerPath = Path.Combine("wwwroot/files/image", DateTime.Now.ToString("yyyyMMddhhmmss") + ".pdf");
             return pdf;
         }
 

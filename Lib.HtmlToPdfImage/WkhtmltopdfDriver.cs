@@ -1,8 +1,9 @@
-﻿namespace Lib.HtmlToPdfImage
+﻿
+namespace Lib.HtmlToPdfImage
 {
     public class WkhtmltopdfDriver : WkhtmlDriver
     {
-        private const string wkhtmlExe = "wkhtmltopdf.exe";
+        private const string _wkhtmlExe = "wkhtmltopdf.exe";
 
         /// <summary>
         /// Converts given HTML string to PDF.
@@ -13,7 +14,7 @@
         /// <returns>PDF as byte array.</returns>
         public static byte[] ConvertHtml(string wkhtmltopdfPath, string switches, string html)
         {
-            return Convert(wkhtmltopdfPath, switches, html, wkhtmlExe);
+            return Convert(wkhtmltopdfPath, switches, html, _wkhtmlExe);
         }
 
         /// <summary>
@@ -24,7 +25,7 @@
         /// <returns>PDF as byte array.</returns>
         public static byte[] Convert(string wkhtmltopdfPath, string switches)
         {
-            return Convert(wkhtmltopdfPath, switches, null, wkhtmlExe);
+            return Convert(wkhtmltopdfPath, switches, null, _wkhtmlExe);
         }
     }
 }

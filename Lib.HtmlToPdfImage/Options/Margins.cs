@@ -49,19 +49,16 @@ namespace Lib.HtmlToPdfImage.Options
         public override string ToString()
         {
             var result = new StringBuilder();
-
             FieldInfo[] fields = GetType().GetFields();
             foreach (FieldInfo fi in fields)
             {
                 var of = fi.GetCustomAttributes(typeof(OptionFlag), true).FirstOrDefault() as OptionFlag;
                 if (of == null)
                     continue;
-
                 object value = fi.GetValue(this);
                 if (value != null)
                     result.AppendFormat(CultureInfo.InvariantCulture, " {0} {1}", of.Name, value);
             }
-
             return result.ToString().Trim();
         }
     }

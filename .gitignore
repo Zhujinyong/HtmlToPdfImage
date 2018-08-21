@@ -260,3 +260,5 @@ paket-files/
 __pycache__/
 *.pyc
 /HtmlToImagePdf/files/image/20180821.png
+*.pdf
+*.png

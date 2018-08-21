@@ -199,7 +199,7 @@ namespace Lib.HtmlToPdfImage
                 {
                     Directory.CreateDirectory(directoryName);
                 }
-                File.WriteAllBytes(SaveOnServerPath, fileContent);
+                await File.WriteAllBytesAsync(SaveOnServerPath, fileContent);
             }
 
             return fileContent;

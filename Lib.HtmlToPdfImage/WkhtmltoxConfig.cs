@@ -7,19 +7,15 @@ namespace Lib.HtmlToPdfImage
     public static class WkhtmltoxConfig
     {
         private static string _WkhtmltoxPath;
+
         internal static string WkhtmltoxPath
         {
             get
             {
-                if (string.IsNullOrEmpty(_WkhtmltoxPath))
-                {
-#if NET45
-                    _RotativaUrl = System.Configuration.ConfigurationManager.AppSettings["RotativaUrl"];
-#endif
-                }
                 return _WkhtmltoxPath;
             }
         }
+
         /// <summary>
         /// Setup wkhtmltox library
         /// </summary>
@@ -34,6 +30,5 @@ namespace Lib.HtmlToPdfImage
             }
             _WkhtmltoxPath = wkhtmltoxPath;
         }
-
     }
 }

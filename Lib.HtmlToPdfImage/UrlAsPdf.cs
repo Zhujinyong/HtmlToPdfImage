@@ -1,5 +1,4 @@
 ﻿using System;
-
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,25 +6,23 @@ namespace Lib.HtmlToPdfImage
 {
     public class UrlAsPdf : AsPdfResultBase
     {
-        private readonly string url;
+        private readonly string _url;
 
         public UrlAsPdf(string url)
         {
-            this.url = url ?? string.Empty;
+            _url = url ?? string.Empty;
         }
 
         protected override string GetUrl(ActionContext context)
         {
-            string urlLower = this.url.ToLower();
+            string urlLower = _url.ToLower();
             if (urlLower.StartsWith("http://") || urlLower.StartsWith("https://"))
             {
-                return this.url;
+                return _url;
             }
-
             var currentUri = new Uri(context.HttpContext.Request.GetDisplayUrl());
             var authority = currentUri.GetComponents(UriComponents.StrongAuthority, UriFormat.Unescaped);
-
-            var url = string.Format("{0}://{1}{2}", context.HttpContext.Request.Scheme, authority, this.url);
+            var url = string.Format("{0}://{1}{2}", context.HttpContext.Request.Scheme, authority, _url);
             return url;
         }
     }

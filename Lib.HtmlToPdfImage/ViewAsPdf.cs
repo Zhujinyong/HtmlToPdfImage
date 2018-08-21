@@ -85,13 +85,9 @@ namespace Lib.HtmlToPdfImage
             {
                 viewName = ((Microsoft.AspNetCore.Mvc.Controllers.ControllerActionDescriptor)context.ActionDescriptor).ActionName;
             }
-
             ViewEngineResult viewResult = GetView(context, viewName, MasterName);
             var html = new StringBuilder();
-
-            //string html = context.GetHtmlFromView(viewResult, viewName, Model);
             ITempDataProvider tempDataProvider = context.HttpContext.RequestServices.GetService(typeof(ITempDataProvider)) as ITempDataProvider;
-
             var viewDataDictionary = new ViewDataDictionary(
                 metadataProvider: new EmptyModelMetadataProvider(),
                 modelState: new ModelStateDictionary())
@@ -116,16 +112,11 @@ namespace Lib.HtmlToPdfImage
                     tempDataDictionary,
                     output,
                     new HtmlHelperOptions());
-                
                 await view.RenderAsync(viewContext);
-
                 html = output.GetStringBuilder();
             }
-
-
             string baseUrl = string.Format("{0}://{1}", context.HttpContext.Request.Scheme, context.HttpContext.Request.Host);
             var htmlForWkhtml = Regex.Replace(html.ToString(), "<head>", string.Format("<head><base href=\"{0}\" />", baseUrl), RegexOptions.IgnoreCase);
-
             byte[] fileContent = WkhtmltopdfDriver.ConvertHtml(this.WkhtmlPath, this.GetConvertOptions(), htmlForWkhtml);
             return fileContent;
         }
