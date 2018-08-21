@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Lib.HtmlToPdfImage;
+﻿using Lib.HtmlToPdfImage;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Web.HtmlToImagePdf.Controllers
