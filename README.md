@@ -1,6 +1,10 @@
 # HtmlToPdfImage
-基于dotnet core 2.0 在linux环境下html转图片/Pdf(当然windows下也可以运行)
+It is base on dotnet core 2.0 ,which supports running on windows and linux .
+It can transfer html to pdf and image for free .
+Open broswer and visit http://xxxx:5001/api/html/image which can transfer html to image,and 
+visit http://xxxx:5001/api/html/pdf ,which can transfer html to pdf.
+Notes:
+1.if you want to publish it to linux ,you should replace wwwroot\Wkhtmltox\wkhtmltoimage.exe with wwwroot\Linux\wkhtmltoimage.exe,
+replace wwwroot\Wkhtmltox\wkhtmltopdf.exe with wwwroot\Linux\wkhtmltopdf.exe.
+2.The folder you publish on linux should has high permission by executing command:run chmod -R 777 *
 
-Web.HtmlToImagePdf发布后，请用wwwroot\Linux下的文件覆盖wwwroot\Wkhtmltox下的文件，再传到linux机器上就可以运行了,
-打开浏览器访问：http://xxxx:5001/api/html/image ，可以把html转图片
-http://xxxx:5001/api/html/pdf ，可以把html转pdf
