@@ -99,7 +99,7 @@ namespace Lib.HtmlToPdfImage
         [OptionFlag("")]
         public string CustomSwitches { get; set; }
 
-        [Obsolete(@"Use BuildFile(this.ControllerContext) method instead and use the resulting binary data to do what needed.")]
+       // [Obsolete(@"Use BuildFile(this.ControllerContext) method instead and use the resulting binary data to do what needed.")]
         public string SaveOnServerPath { get; set; }
 
         public ContentDisposition ContentDisposition { get; set; }
@@ -192,9 +192,14 @@ namespace Lib.HtmlToPdfImage
 
             var fileContent = await CallTheDriver(context);
 
-            if (string.IsNullOrEmpty(this.SaveOnServerPath) == false)
+            if (!string.IsNullOrEmpty(SaveOnServerPath))
             {
-                File.WriteAllBytes(this.SaveOnServerPath, fileContent);
+                var directoryName = Path.GetDirectoryName(SaveOnServerPath);
+                if (Directory.Exists(directoryName) == false)
+                {
+                    Directory.CreateDirectory(directoryName);
+                }
+                File.WriteAllBytes(SaveOnServerPath, fileContent);
             }
 
             return fileContent;

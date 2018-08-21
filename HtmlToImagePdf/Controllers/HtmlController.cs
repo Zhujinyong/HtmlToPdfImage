@@ -1,5 +1,7 @@
 ﻿using Lib.HtmlToPdfImage;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.IO;
 
 namespace Web.HtmlToImagePdf.Controllers
 {
@@ -24,6 +26,7 @@ namespace Web.HtmlToImagePdf.Controllers
 
             //第二种，传Url
             var image = new UrlAsImage(url);
+            image.SaveOnServerPath = Path.Combine("files/image", DateTime.Now.ToString("yyyyMMdd")+".png");
             // image.PageWidth = 800;
             // image.PageHeight = 600;
             return image;
