@@ -1,5 +1,5 @@
 # HtmlToPdfImage
-###    It is base on dotnet core 2.0 ,which supports running on windows and linux which can transfer html to pdf and image for free .
+###    It is base on wkhtmltox and dotnet core 2.0 which supports running on windows and linux which can transfer html to pdf and image for free .
 
 ### Open broswer and visit <a href="http://xxxx:5001/api/html/image">http://xxxx:5001/api/html/image</a> which can transfer html to image.
 
