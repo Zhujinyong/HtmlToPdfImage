@@ -92,7 +92,6 @@ namespace Lib.HtmlToPdfImage
                 result.Append(this.PageMargins.ToString());
             result.Append(" ");
             result.Append(base.GetConvertOptions());
-
             return result.ToString().Trim();
         }
     }

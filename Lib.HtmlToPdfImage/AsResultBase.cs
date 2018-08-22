@@ -113,18 +113,15 @@ namespace Lib.HtmlToPdfImage
         protected virtual string GetConvertOptions()
         {
             var result = new StringBuilder();
-
             var fields = this.GetType().GetProperties();
             foreach (var fi in fields)
             {
                 var of = fi.GetCustomAttributes(typeof(OptionFlag), true).FirstOrDefault() as OptionFlag;
                 if (of == null)
                     continue;
-
                 object value = fi.GetValue(this, null);
                 if (value == null)
                     continue;
-
                 if (fi.PropertyType == typeof(Dictionary<string, string>))
                 {
                     var dictionary = (Dictionary<string, string>)value;
@@ -147,10 +144,17 @@ namespace Lib.HtmlToPdfImage
             return result.ToString().Trim();
         }
 
+        private string GetWkParams(string url)
+        {
+            var switches = string.Empty;
+            switches += " " + this.GetConvertOptions();
+            switches += " " + url;
+            return switches;
+        }
+
         private string GetWkParams(ActionContext context)
         {
             var switches = string.Empty;
-
             string authenticationCookie = null;
             if (context.HttpContext.Request.Cookies != null && context.HttpContext.Request.Cookies.Keys.Contains(FormsAuthenticationCookieName))
             {
@@ -161,14 +165,19 @@ namespace Lib.HtmlToPdfImage
                 //var authCookieValue = authenticationCookie.Value;
                 switches += " --cookie " + this.FormsAuthenticationCookieName + " " + authenticationCookie;
             }
-
             switches += " " + this.GetConvertOptions();
-
             var url = this.GetUrl(context);
             switches += " " + url;
-
             return switches;
         }
+
+        protected virtual async Task<byte[]> CallTheDriver(string url)
+        {
+            var switches = this.GetWkParams(url);
+            var fileContent = this.WkhtmlConvert(switches);
+            return fileContent;
+        }
+
 
         protected virtual async Task<byte[]> CallTheDriver(ActionContext context)
         {
@@ -176,22 +185,15 @@ namespace Lib.HtmlToPdfImage
             var fileContent = this.WkhtmlConvert(switches);
             return fileContent;
         }
-        //protected abstract Task<byte[]> CallTheDriver(ActionContext context);
 
         protected abstract byte[] WkhtmlConvert(string switches);
 
-        public async Task<byte[]> BuildFile(ActionContext context)
+        public async Task<byte[]> BuildFile(string url)
         {
-            if (context == null)
-                throw new ArgumentNullException("context");
-
-            //if (this.WkhtmlPath == string.Empty)
-            //    this.WkhtmlPath = context.HttpContext.Server.MapPath("~/Wkhtmltox");
-
+            if (string.IsNullOrEmpty(url))
+                throw new ArgumentNullException("url is null");
             this.WkhtmlPath = WkhtmltoxConfig.WkhtmltoxPath;
-
-            var fileContent = await CallTheDriver(context);
-
+            var fileContent = await CallTheDriver(url);
             if (!string.IsNullOrEmpty(SaveOnServerPath))
             {
                 var directoryName = Path.GetDirectoryName(SaveOnServerPath);
@@ -201,16 +203,31 @@ namespace Lib.HtmlToPdfImage
                 }
                 await File.WriteAllBytesAsync(SaveOnServerPath, fileContent);
             }
+            return fileContent;
+        }
 
+        public async Task<byte[]> BuildFile(ActionContext context)
+        {
+            if (context == null)
+                throw new ArgumentNullException("context");
+            this.WkhtmlPath = WkhtmltoxConfig.WkhtmltoxPath;
+            var fileContent = await CallTheDriver(context);
+            if (!string.IsNullOrEmpty(SaveOnServerPath))
+            {
+                var directoryName = Path.GetDirectoryName(SaveOnServerPath);
+                if (Directory.Exists(directoryName) == false)
+                {
+                    Directory.CreateDirectory(directoryName);
+                }
+                await File.WriteAllBytesAsync(SaveOnServerPath, fileContent);
+            }
             return fileContent;
         }
 
         public async override Task ExecuteResultAsync(ActionContext context)
         {
             var fileContent = await this.BuildFile(context);
-
             var response = this.PrepareResponse(context.HttpContext.Response);
-
             await response.Body.WriteAsync(fileContent, 0, fileContent.Length);
         }
 
@@ -218,7 +235,6 @@ namespace Lib.HtmlToPdfImage
         {
             string invalidChars = Regex.Escape(new string(Path.GetInvalidPathChars()) + new string(Path.GetInvalidFileNameChars()));
             string invalidCharsPattern = string.Format(@"[{0}]+", invalidChars);
-
             string result = Regex.Replace(name, invalidCharsPattern, "_");
             return result;
         }
@@ -226,17 +242,13 @@ namespace Lib.HtmlToPdfImage
         protected HttpResponse PrepareResponse(HttpResponse response)
         {
             response.ContentType = this.GetContentType();
-
             if (!String.IsNullOrEmpty(this.FileName))
             {
                 var contentDisposition = this.ContentDisposition == ContentDisposition.Attachment
                     ? "attachment"
                     : "inline";
-
                 response.Headers.Add("Content-Disposition", string.Format("{0}; filename=\"{1}\"", contentDisposition, SanitizeFileName(this.FileName)));
             }
-            //response.Headers.Add("Content-Type", this.GetContentType());
-
             return response;
         }
 

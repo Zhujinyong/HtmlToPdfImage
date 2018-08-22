@@ -6,11 +6,11 @@ namespace Lib.HtmlToPdfImage
         private const string _wkhtmlExe = "wkhtmltoimage.exe";
 
         /// <summary>
-        /// Converts given HTML string to PDF.
+        /// Converts given HTML string to Image.
         /// </summary>
         /// <param name="wkhtmltopdfPath">Path to wkthmltopdf.</param>
         /// <param name="switches">Switches that will be passed to wkhtmltopdf binary.</param>
-        /// <param name="html">String containing HTML code that should be converted to PDF.</param>
+        /// <param name="html">String containing HTML code that should be converted to Image.</param>
         /// <returns>PDF as byte array.</returns>
         public static byte[] ConvertHtml(string wkhtmltopdfPath, string switches, string html)
         {
@@ -18,9 +18,9 @@ namespace Lib.HtmlToPdfImage
         }
 
         /// <summary>
-        /// Converts given URL to PDF.
+        /// Converts given URL to Image.
         /// </summary>
-        /// <param name="wkhtmltopdfPath">Path to wkthmltopdf.</param>
+        /// <param name="wkhtmltopdfPath">Path to wkthmltoimage.</param>
         /// <param name="switches">Switches that will be passed to wkhtmltopdf binary.</param>
         /// <returns>PDF as byte array.</returns>
         public static byte[] Convert(string wkhtmltopdfPath, string switches)

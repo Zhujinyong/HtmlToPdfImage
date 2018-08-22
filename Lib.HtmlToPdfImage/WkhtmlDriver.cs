@@ -8,11 +8,11 @@ namespace Lib.HtmlToPdfImage
     public abstract class WkhtmlDriver
     {
         /// <summary>
-        /// Converts given URL or HTML string to PDF.
+        /// Converts given URL or HTML string to PDF/Image.
         /// </summary>
         /// <param name="wkhtmlPath">Path to wkthmltopdf\wkthmltoimage.</param>
         /// <param name="switches">Switches that will be passed to wkhtmltopdf binary.</param>
-        /// <param name="html">String containing HTML code that should be converted to PDF.</param>
+        /// <param name="html">String containing HTML code that should be converted to PDF/Image.</param>
         /// <param name="wkhtmlExe"></param>
         /// <returns>PDF as byte array.</returns>
         protected static byte[] Convert(string wkhtmlPath, string switches, string html, string wkhtmlExe)
